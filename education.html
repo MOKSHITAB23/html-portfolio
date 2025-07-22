@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Digital Resume</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0a0a0a;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background from Portfolio Design */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+        }
+
+        .bg-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(90deg, transparent 79px, rgba(0, 255, 255, 0.03) 81px, rgba(0, 255, 255, 0.03) 82px, transparent 84px),
+                linear-gradient(0deg, transparent 79px, rgba(0, 255, 255, 0.03) 81px, rgba(0, 255, 255, 0.03) 82px, transparent 84px),
+                linear-gradient(45deg, transparent 74px, rgba(59, 130, 246, 0.02) 75px, rgba(59, 130, 246, 0.02) 76px, transparent 77px),
+                radial-gradient(circle at 25% 25%, rgba(139, 92, 246, 0.1) 1px, transparent 2px),
+                radial-gradient(circle at 75% 75%, rgba(34, 197, 94, 0.08) 1px, transparent 2px);
+            background-size: 80px 80px, 80px 80px, 150px 150px, 40px 40px, 60px 60px;
+            animation: matrixMove 20s linear infinite, pulse 4s ease-in-out infinite;
+        }
+
+        .bg-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 25%),
+                radial-gradient(circle at 60% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 30% 70%, rgba(236, 72, 153, 0.08) 0%, transparent 25%);
+            animation: orbFloat 15s ease-in-out infinite;
+        }
+
+        @keyframes matrixMove {
+            0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: 80px 80px, -80px 80px, 150px 150px, 40px 40px, -60px 60px; }
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1);
+                opacity: 0.8;
+            }
+            25% { 
+                transform: translate(20px, -30px) scale(1.1);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translate(-15px, -20px) scale(0.9);
+                opacity: 1;
+            }
+            75% { 
+                transform: translate(25px, 10px) scale(1.05);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 1rem 3rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 3rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 3px;
+        }
+
+        /* Resume Sections */
+        .resume-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .resume-section {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .resume-section:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3b82f6;
+            border: 3px solid #1e293b;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+        }
+
+        .timeline-content {
+            background: rgba(51, 65, 85, 0.6);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #475569;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-content {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .timeline-date {
+            font-size: 0.9rem;
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-subtitle {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            animation: float 20s infinite linear;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 5rem 1.5rem 2rem;
+            }
+
+            .resume-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    
+    <nav>
+        <div class="nav-content">
+            <div class="logo">MOKSHITA BAJPAI</div>
+            <ul class="nav-menu">
+                <li><a href="index.html" onclick="showSection('home')">Home</a></li>
+                <li><a href="index.html" onclick="showSection('about')">About</a></li>
+                <li><a href="technical.html" onclick="showSection('skills')">Skills</a></li>
+                <li><a href="projects.html" onclick="showSection('projects')">Projects</a></li>
+                <li><a href="#" class="active">Education and Project</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="contactme.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <div class="container">
+        <div class="resume-grid">
+            <div class="resume-section">
+                <h2 class="section-title">Education</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2022 - 2026</div>
+                            <h3 class="timeline-title">Bachelor's Degree in Computer Science</h3>
+                            <div class="timeline-subtitle">Vellore Institute of Technology, Vellore</div>
+                            <p class="timeline-description">
+                                Pursuing a Bachelor's in Computer Science with a current CGPA of 9.09 (till 5th semester); building strong technical and problem-solving skills through coursework and projects.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2020 - 2022</div>
+                            <h3 class="timeline-title">High School Diploma</h3>
+                            <div class="timeline-subtitle">Ryan International School, Noida</div>
+                            <p class="timeline-description">
+                                Gained a solid academic foundation along with strong communication, teamwork, and leadership skills through active participation in school activities and projects.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="resume-section">
+                <h2 class="section-title">Experience</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">July 2024 - Jan 2025</div>
+                            <h3 class="timeline-title">UI/UX Designer</h3>
+                            <div class="timeline-subtitle">KalkiNI.inc</div>
+                            <p class="timeline-description">
+                                Contributing to brainstorming sessions and design sprints. Created wireframes and low-fidelity prototypes to support rapid testing and iteration of design concepts.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">Feb 2025 - Mar 2025</div>
+                            <h3 class="timeline-title">Frontend Developer Intern</h3>
+                            <div class="timeline-subtitle">ManMa Services</div>
+                            <p class="timeline-description">
+                                Worked as a frontend developer, building responsive web interfaces and translating Figma prototypes into functional code to enhance user experience.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">May 2025 - Jul 2025</div>
+                            <h3 class="timeline-title">Data Analyst</h3>
+                            <div class="timeline-subtitle">Spring People</div>
+                            <p class="timeline-description">
+                                Assisted in building and testing web and mobile apps using Java, Python, and React, while working with cross-functional teams to deliver effective solutions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles (from portfolio design)
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            
+            const colors = [
+                'rgba(59, 130, 246, 0.6)',
+                'rgba(139, 92, 246, 0.5)',
+                'rgba(34, 197, 94, 0.4)',
+                'rgba(236, 72, 153, 0.3)'
+            ];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        // Generate particles continuously
+        setInterval(createParticle, 300);
+
+        // Mouse interaction effect
+        document.addEventListener('mousemove', (e) => {
+            const ripple = document.createElement('div');
+            ripple.style.position = 'fixed';
+            ripple.style.width = '4px';
+            ripple.style.height = '4px';
+            ripple.style.background = 'rgba(59, 130, 246, 0.4)';
+            ripple.style.borderRadius = '50%';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.zIndex = '-1';
+            ripple.style.animation = 'rippleExpand 1s ease-out forwards';
+            
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 1000);
+        });
+
+        // Add ripple animation CSS
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            @keyframes rippleExpand {
+                0% {
+                    transform: scale(1);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: scale(20);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(rippleStyle);
+
+        // Timeline item animations
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.querySelector('.timeline-content').style.transform = 'translateX(10px)';
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                item.querySelector('.timeline-content').style.transform = 'translateX(0)';
+            });
+        });
+
+        function showSection(sectionName) {
+            // This would be connected to your navigation system
+            console.log(`Showing section: ${sectionName}`);
+        }
+    </script>
+</body>
+</html>

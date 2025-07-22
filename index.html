@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mokshita Bajpai - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Unique Animated Background */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+        }
+
+        .bg-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                /* Matrix-like falling lines */
+                linear-gradient(90deg, transparent 79px, rgba(0, 255, 255, 0.03) 81px, rgba(0, 255, 255, 0.03) 82px, transparent 84px),
+                linear-gradient(0deg, transparent 79px, rgba(0, 255, 255, 0.03) 81px, rgba(0, 255, 255, 0.03) 82px, transparent 84px),
+                /* Diagonal grid */
+                linear-gradient(45deg, transparent 74px, rgba(59, 130, 246, 0.02) 75px, rgba(59, 130, 246, 0.02) 76px, transparent 77px),
+                /* Hexagonal pattern */
+                radial-gradient(circle at 25% 25%, rgba(139, 92, 246, 0.1) 1px, transparent 2px),
+                radial-gradient(circle at 75% 75%, rgba(34, 197, 94, 0.08) 1px, transparent 2px);
+            background-size: 80px 80px, 80px 80px, 150px 150px, 40px 40px, 60px 60px;
+            animation: matrixMove 20s linear infinite, pulse 4s ease-in-out infinite;
+        }
+
+        .bg-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                /* Floating orbs */
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 25%),
+                radial-gradient(circle at 60% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 30% 70%, rgba(236, 72, 153, 0.08) 0%, transparent 25%);
+            animation: orbFloat 15s ease-in-out infinite;
+        }
+
+        @keyframes matrixMove {
+            0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: 80px 80px, -80px 80px, 150px 150px, 40px 40px, -60px 60px; }
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1);
+                opacity: 0.8;
+            }
+            25% { 
+                transform: translate(20px, -30px) scale(1.1);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translate(-15px, -20px) scale(0.9);
+                opacity: 1;
+            }
+            75% { 
+                transform: translate(25px, 10px) scale(1.05);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Interactive background particles */
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: rgba(59, 130, 246, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            animation: particleFloat 8s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 1rem 3rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        /* Section Styling */
+        section {
+            min-height: 100vh;
+            padding: 6rem 3rem 3rem;
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Home Section */
+        .home-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            height: calc(100vh - 120px);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            color: #f8fafc;
+            line-height: 1.1;
+        }
+
+        .hero-content .tagline {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            border: 2px solid #3b82f6;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #e2e8f0;
+            border: 2px solid #475569;
+        }
+
+        .btn-secondary:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .skills-overview {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+
+        .skills-overview h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #f1f5f9;
+        }
+
+        .skill-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-name {
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        .skill-percentage {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 8px;
+            background: #334155;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 4px;
+            transition: width 1s ease-out 0.5s;
+        }
+
+        .right-sidebar {
+            position: relative;
+        }
+
+        .profile-placeholder {
+            width: 100%;
+            height: 400px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 2px dashed #475569;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .role-card {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            text-align: center;
+        }
+
+        .role-card h4 {
+            font-size: 1.25rem;
+            color: #f1f5f9;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-card .subtitle {
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: #2563eb;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: start;
+            padding-top: 2rem;
+        }
+
+        .about-content {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid #334155;
+        }
+
+        .about-content h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #f8fafc;
+        }
+
+        .about-content h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: #3b82f6;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+        }
+
+        .traits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .trait-item {
+            background: rgba(51, 65, 85, 0.6);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            color: #e2e8f0;
+            border: 1px solid #475569;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            section {
+                padding: 5rem 1.5rem 2rem;
+            }
+
+            .home-grid,
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .traits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    
+    <nav>
+        <div class="nav-content">
+            <div class="logo">MOKSHITA BAJPAI</div>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showSection('home')" class="active">Home</a></li>
+                <li><a href="#" onclick="showSection('about')">About</a></li>
+                <li><a href="technical.html">Skills</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="education.html">Education and Experience</a></li>
+                <li><a href="certifications.html">Certifications</a></li>
+                <li><a href="contactme.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="active">
+        <div class="container">
+            <div class="home-grid">
+                <div class="hero-content">
+                    <h1>Mokshita Bajpai</h1>
+                    <p class="tagline">Turning data into decisions, bugs into features, and coffee into clean code — one analysis at a time.</p>
+                    
+                    <div class="button-group">
+                        <a href="projects.html" class="btn btn-primary">View my work</a>
+                        <a href="#" class="btn btn-secondary">Download Full Resume ↓</a>
+                    </div>
+
+                    <div class="skills-overview">
+                        <h3>Skills overview</h3>
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Frontend Development</span>
+                                <span class="skill-percentage">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Backend Development</span>
+                                <span class="skill-percentage">60%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" data-width="60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="right-sidebar">
+                    <div class="profile-placeholder">
+                        <div>📷</div>
+                        <div>Your Photo Here</div>
+                        <small>(Right Side)</small>
+                    </div>
+                    
+                    <div class="role-card">
+                        <h4>Software Development Analyst</h4>
+                        <p class="subtitle">Ready to collaborate</p>
+                        <button class="contact-btn">GET IN TOUCH →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="profile-placeholder">
+                    <div>📷</div>
+                    <div>Your Photo Here</div>
+                    <small>(Left Side)</small>
+                </div>
+                
+                <div class="about-content">
+                    <h2>ABOUT ME</h2>
+                    
+                    <h3>Who I am</h3>
+                    <p>I'm a third-year Software Engineering student at Vellore Institute of technology with a passion for creating intuitive and impactful applications. My journey in tech began when I built my first website at 14, and I've been hooked ever since.</p>
+                    
+                    <p>When I'm not coding, you can find me working in NGO, Playing sports like tennis or basketball, or exploring the latest technologies. I believe in the power of technology to solve real-world problems and am committed to creating accessible, user-friendly solutions.</p>
+                    
+                    <div class="traits-grid">
+                        <div class="trait-item">🔧 Problem Solver</div>
+                        <div class="trait-item">👥 Team Player</div>
+                        <div class="trait-item">💡 Innovative thinker</div>
+                        <div class="trait-item">🎯 Continuous learner</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            
+            // Random colors for particles
+            const colors = [
+                'rgba(59, 130, 246, 0.6)',
+                'rgba(139, 92, 246, 0.5)',
+                'rgba(34, 197, 94, 0.4)',
+                'rgba(236, 72, 153, 0.3)'
+            ];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        // Generate particles continuously
+        setInterval(createParticle, 300);
+
+        // Mouse interaction effect
+        document.addEventListener('mousemove', (e) => {
+            const ripple = document.createElement('div');
+            ripple.style.position = 'fixed';
+            ripple.style.width = '4px';
+            ripple.style.height = '4px';
+            ripple.style.background = 'rgba(59, 130, 246, 0.4)';
+            ripple.style.borderRadius = '50%';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.zIndex = '-1';
+            ripple.style.animation = 'rippleExpand 1s ease-out forwards';
+            
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 1000);
+        });
+
+        // Add ripple animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rippleExpand {
+                0% {
+                    transform: scale(1);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: scale(20);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show target section
+            document.getElementById(sectionName).classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Animate skill bars if home section
+            if (sectionName === 'home') {
+                setTimeout(() => {
+                    document.querySelectorAll('.skill-fill').forEach(bar => {
+                        bar.style.width = bar.getAttribute('data-width');
+                    });
+                }, 300);
+            }
+        }
+
+        // Initialize skill bars animation
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.skill-fill').forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-width');
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>

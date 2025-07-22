@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Certifications - Mokshita Bajpai</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0a0a0a;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background from Portfolio Design */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+        }
+
+        .bg-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(90deg, transparent 79px, rgba(0, 255, 255, 0.03) 81px, rgba(0, 255, 255, 0.03) 82px, transparent 84px),
+                linear-gradient(0deg, transparent 79px, rgba(0, 255, 255, 0.03) 81px, rgba(0, 255, 255, 0.03) 82px, transparent 84px),
+                linear-gradient(45deg, transparent 74px, rgba(59, 130, 246, 0.02) 75px, rgba(59, 130, 246, 0.02) 76px, transparent 77px),
+                radial-gradient(circle at 25% 25%, rgba(139, 92, 246, 0.1) 1px, transparent 2px),
+                radial-gradient(circle at 75% 75%, rgba(34, 197, 94, 0.08) 1px, transparent 2px);
+            background-size: 80px 80px, 80px 80px, 150px 150px, 40px 40px, 60px 60px;
+            animation: matrixMove 20s linear infinite, pulse 4s ease-in-out infinite;
+        }
+
+        .bg-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 25%),
+                radial-gradient(circle at 60% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 30% 70%, rgba(236, 72, 153, 0.08) 0%, transparent 25%);
+            animation: orbFloat 15s ease-in-out infinite;
+        }
+
+        @keyframes matrixMove {
+            0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: 80px 80px, -80px 80px, 150px 150px, 40px 40px, -60px 60px; }
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1);
+                opacity: 0.8;
+            }
+            25% { 
+                transform: translate(20px, -30px) scale(1.1);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translate(-15px, -20px) scale(0.9);
+                opacity: 1;
+            }
+            75% { 
+                transform: translate(25px, 10px) scale(1.05);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 1rem 3rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 3rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #f8fafc;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .title span {
+            color: #3b82f6;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Certifications Grid */
+        .certifications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .cert-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cert-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .cert-card:hover::before {
+            left: 100%;
+        }
+
+        .cert-card:hover {
+            transform: translateY(-10px);
+            border-color: #3b82f6;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .cert-logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid #3b82f6;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+            transition: all 0.3s ease;
+        }
+
+        .cert-card:hover .cert-logo {
+            background: #3b82f6;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .cert-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .cert-provider {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .view-btn {
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            animation: float 20s infinite linear;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 5rem 1.5rem 2rem;
+            }
+
+            .title {
+                font-size: 2.5rem;
+            }
+
+            .certifications-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    
+    <nav>
+        <div class="nav-content">
+            <div class="logo">MOKSHITA BAJPAI</div>
+            <ul class="nav-menu">
+                <li><a href="index.html" onclick="showSection('home')">Home</a></li>
+                <li><a href="index.html" onclick="showSection('about')">About</a></li>
+                <li><a href="technical.html" onclick="showSection('skills')">Skills</a></li>
+                <li><a href="projects.html" onclick="showSection('projects')">Projects</a></li>
+                <li><a href="education.html" onclick="showSection('resume')">Education and Experience</a></li>
+                <li><a href="#" class="active">Certifications</a></li>
+                <li><a href="contactme.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="title">My <span>Certifications</span></h1>
+            <p class="subtitle">A collection of my professional certifications and completed courses</p>
+        </div>
+
+        <div class="certifications-grid">
+            <div class="cert-card">
+                <div class="cert-logo">MS</div>
+                <h3 class="cert-title">Introduction to the Basics of Azure Services</h3>
+                <p class="cert-provider">Microsoft</p>
+                <button class="view-btn" onclick="viewCertification('microsoft-azure')">View Certificate</button>
+            </div>
+
+            <div class="cert-card">
+                <div class="cert-logo">G</div>
+                <h3 class="cert-title">Foundations of Cybersecurity</h3>
+                <p class="cert-provider">Google</p>
+                <button class="view-btn" onclick="viewCertification('google-cybersecurity')">View Certificate</button>
+            </div>
+
+            <div class="cert-card">
+                <div class="cert-logo">G</div>
+                <h3 class="cert-title">Play It Safe: Manage Security Risks</h3>
+                <p class="cert-provider">Google</p>
+                <button class="view-btn" onclick="viewCertification('google-security-risks')">View Certificate</button>
+            </div>
+
+            <div class="cert-card">
+                <div class="cert-logo">G</div>
+                <h3 class="cert-title">Connect and Protect: Networks and Network Security</h3>
+                <p class="cert-provider">Google</p>
+                <button class="view-btn" onclick="viewCertification('google-networks')">View Certificate</button>
+            </div>
+
+            <div class="cert-card">
+                <div class="cert-logo">G</div>
+                <h3 class="cert-title">Tools of the Trade: Linux and SQL</h3>
+                <p class="cert-provider">Google</p>
+                <button class="view-btn" onclick="viewCertification('google-linux-sql')">View Certificate</button>
+            </div>
+
+            <div class="cert-card">
+                <div class="cert-logo">GC</div>
+                <h3 class="cert-title">Introduction to Generative AI Studio</h3>
+                <p class="cert-provider">Google Cloud</p>
+                <button class="view-btn" onclick="viewCertification('google-cloud-ai')">View Certificate</button>
+            </div>
+
+            <div class="cert-card">
+                <div class="cert-logo">SL</div>
+                <h3 class="cert-title">Introduction to Artificial Intelligence</h3>
+                <p class="cert-provider">Simplilearn</p>
+                <button class="view-btn" onclick="viewCertification('simplilearn-ai')">View Certificate</button>
+            </div>
+
+            <div class="cert-card">
+                <div class="cert-logo">IBM</div>
+                <h3 class="cert-title">IBM GenAI course</h3>
+                <p class="cert-provider">IBM</p>
+                <button class="view-btn" onclick="viewCertification('ibm-genai')">View Certificate</button>
+            </div>
+
+            <div class="cert-card">
+                <div class="cert-logo">U</div>
+                <h3 class="cert-title">Full stack web development bootcamp</h3>
+                <p class="cert-provider">Udemy</p>
+                <button class="view-btn" onclick="viewCertification('udemy-fullstack')">View Certificate</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles (from portfolio design)
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            
+            const colors = [
+                'rgba(59, 130, 246, 0.6)',
+                'rgba(139, 92, 246, 0.5)',
+                'rgba(34, 197, 94, 0.4)',
+                'rgba(236, 72, 153, 0.3)'
+            ];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        // Generate particles continuously
+        setInterval(createParticle, 300);
+
+        // Mouse interaction effect
+        document.addEventListener('mousemove', (e) => {
+            const ripple = document.createElement('div');
+            ripple.style.position = 'fixed';
+            ripple.style.width = '4px';
+            ripple.style.height = '4px';
+            ripple.style.background = 'rgba(59, 130, 246, 0.4)';
+            ripple.style.borderRadius = '50%';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.zIndex = '-1';
+            ripple.style.animation = 'rippleExpand 1s ease-out forwards';
+            
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 1000);
+        });
+
+        // Add ripple animation CSS
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            @keyframes rippleExpand {
+                0% {
+                    transform: scale(1);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: scale(20);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(rippleStyle);
+
+        // Certification functions
+        function viewCertification(certId) {
+            alert(`Viewing certification: ${certId}\n\nThis would normally open the certificate or redirect to the certification platform.`);
+        }
+
+        function showSection(sectionName) {
+            // This would be connected to your navigation system
+            console.log(`Showing section: ${sectionName}`);
+        }
+
+        // Scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const certCards = document.querySelectorAll('.cert-card');
+            certCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.5s ease ' + (index * 0.1) + 's';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
